@@ -18,22 +18,18 @@ lazy val gatling = (project in file("gatling"))
     name := "gatling",
     scalaVersion := "2.13.5",
     libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.5.1"  % Test,
-      "io.gatling"            % "gatling-test-framework"    % "3.5.1"  % Test,
-      "com.github.phisgr"     % "gatling-grpc"              % "0.11.0" % Test,
-      "com.thesamet.scalapb" %% "scalapb-runtime-grpc"      % scalapb.compiler.Version.scalapbVersion,
-      "com.typesafe.akka"    %% "akka-discovery"            % "2.6.11" % Test,
-      "com.typesafe.akka"    %% "akka-protobuf"             % "2.6.11" % Test,
-      "com.typesafe.akka"    %% "akka-protobuf-v3"          % "2.6.11" % Test,
-      "com.typesafe.akka"    %% "akka-stream"               % "2.6.11" % Test
+      "io.gatling.highcharts" % "gatling-charts-highcharts"  % "3.5.1"  % Test,
+      "io.gatling"            % "gatling-test-framework"     % "3.5.1"  % Test,
+      "com.github.phisgr"     % "gatling-grpc"               % "0.11.0" % Test,
+      "com.google.api.grpc"   % "proto-google-common-protos" % "2.1.0"  % "protobuf-src",
+      "com.thesamet.scalapb" %% "scalapb-runtime-grpc"       % scalapb.compiler.Version.scalapbVersion,
+      "com.typesafe.akka"    %% "akka-discovery"             % "2.6.11" % Test,
+      "com.typesafe.akka"    %% "akka-protobuf"              % "2.6.11" % Test,
+      "com.typesafe.akka"    %% "akka-protobuf-v3"           % "2.6.11" % Test,
+      "com.typesafe.akka"    %% "akka-stream"                % "2.6.11" % Test
     ),
-    PB.protoSources in Compile := Seq(
-      baseDirectory.in(server).value / "src/main/protobuf",
-      target.value / "protobuf_external_src"
-    ),
-    PB.targets in Compile += scalapb.gen() -> (sourceManaged in Compile).value
+    PB.targets in Test += scalapb.gen() -> (sourceManaged in Test).value
   )
-  .dependsOn(client)
 
 val root = (project in file("."))
   .settings(
